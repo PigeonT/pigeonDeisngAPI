@@ -1,43 +1,28 @@
+'use strict'
+
 const http         = require('http'),
-      fs           = require('fs'),
-      path         = require('path'),
-      contentTypes = require('./utils/content-types'),
-      sysInfo      = require('./utils/sys-info'),
-      env          = process.env;
+      env          = process.env,
+      express      = require('express'),
+      apiController= require('./controllers/apiController'),
+      bodyParser = require('body-parser');
 
-let server = http.createServer(function (req, res) {
-  let url = req.url;
-  if (url == '/') {
-    url += 'index.html';
-  }
 
-  // IMPORTANT: Your application HAS to respond to GET /health with status 200
-  //            for OpenShift health monitoring
+let app = express();
 
-  if (url == '/health') {
+app.use(bodyParser.json());  
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/api', apiController);
+
+
+app.get('/health', function(req, res) {
+    // IMPORTANT: Your application HAS to respond to GET /health with status 200
+    // for OpenShift health monitoring
     res.writeHead(200);
     res.end();
-  } else if (url.indexOf('/info/') == 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'no-cache, no-store');
-    res.end(JSON.stringify(sysInfo[url.slice(6)]()));
-  } else {
-    fs.readFile('./static' + url, function (err, data) {
-      if (err) {
-        res.writeHead(404);
-        res.end();
-      } else {
-        let ext = path.extname(url).slice(1);
-        res.setHeader('Content-Type', contentTypes[ext]);
-        if (ext === 'html') {
-          res.setHeader('Cache-Control', 'no-cache, no-store');
-        }
-        res.end(data);
-      }
-    });
-  }
 });
 
+let server = http.createServer(app);
+
 server.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {
-  console.log(`Application worker ${process.pid} started...`);
+    console.log(`Application worker ${process.pid} started...`);
 });

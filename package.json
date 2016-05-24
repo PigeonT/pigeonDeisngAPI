@@ -1,5 +1,5 @@
 {
-  "name": "openshift-cartridge-nodejs-template",
+  "name": "pigeon-api",
   "version": "1.0.1",
   "description": "Custom Node.js cartridge for OpenShift - sample application",
   "private": true,
@@ -8,5 +8,22 @@
     "start": "node --use_strict start.js"
   },
   "author": "Ionut-Cristian Florescu <ionut.florescu@gmail.com>",
-  "license": "ISC"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "nodemailer": "^0.7.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "ssh://574234860c1e6612ad00019f@pigeontgithubblog-angebot.rhcloud.com/~/git/pigeontgithubblog.git/"
+  },
+  "keywords": [
+    "api",
+    "for",
+    "pigeont.github.io",
+    "programming",
+    "stuff"
+  ]
 }
