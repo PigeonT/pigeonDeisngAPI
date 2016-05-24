@@ -8,8 +8,8 @@ const contentTypes = require('../utils/content-types'),
 const smtpTransport = nodemailer.createTransport("SMTP",{
    service: "Gmail",
    auth: {
-       user: "pigeon.tian@gmail.com",
-       pass: "Buej2d31@gmail.com"
+       user: "*",
+       pass: "*"
    },
    secureConnection : true,
    host : 'smtp.gmail.com',
@@ -20,12 +20,12 @@ let router = express.Router();
 
 router.post('/fromPigeonTTODispatch', function(req, res, next) {
 	let name = req.body.name || 'Anonymous';
-	let email = req.body.email || 'pigeon.tian@gmail.com';
+	let email = req.body.email || '*';
 	let message = req.body.message || 'from pigeonT.github.io'
 
 	smtpTransport.sendMail({
 	   from: email, // sender address
-	   to: "pigeon.tian@gmail.com", // comma separated list of receivers
+	   to: "*", // comma separated list of receivers
 	   subject: "hello from pigeont.github.io from" + name, // Subject line
 	   text: message // plaintext body
 	}, function(error, response){
